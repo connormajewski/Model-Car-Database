@@ -15,4 +15,6 @@ Download and extract the .zip to your computer and move the extracted folder to 
 To run, click on main.exe, or create a shorcut to it somewhere on your system.
 
 ## Media ##
+![Capture](https://github.com/user-attachments/assets/36682590-f8d0-4d41-a481-6b0d19954629)
+![Capture1](https://github.com/user-attachments/assets/d1b762f6-94ab-43d2-b191-41aedbd07357)
 
