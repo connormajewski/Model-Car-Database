@@ -111,7 +111,7 @@ class Sidebar(ctk.CTkFrame):
             self,
             width=width,
             height=30,
-            values=["Any", "1:12", "1:18", "1:24", "1:34", "1:36", "1:48"]
+            values=["Any", "1:12", "1:18", "1:24", "1:34", "1:36", "1:43", "1:64"]
         )
 
         scale_menu.grid(
@@ -363,6 +363,7 @@ class EditWindow(ctk.CTkToplevel) :
         super().__init__(master)
 
         self.attribute = ([
+            "ID",
             "Brand",
             "Year",
             "Description",
@@ -412,7 +413,7 @@ class EditWindow(ctk.CTkToplevel) :
             self,
             width=width,
             height=30,
-            values=["1:12", "1:18", "1:24", "1:34", "1:36", "1:48"]
+            values=["1:12", "1:18", "1:24", "1:34", "1:36", "1:43", "1:64"]
         )
 
         self.scale_menu.grid(
@@ -528,6 +529,8 @@ class MainWindow(ctk.CTkScrollableFrame):
         # list to
 
         self.models = []
+        
+        self.filters = []
 
         self.configure(width=width, height=height)
 
@@ -546,23 +549,27 @@ class MainWindow(ctk.CTkScrollableFrame):
 
         for i in range(len(attrs)):
 
-            self.delete_button = ctk.CTkButton(
+            self.filter_button = ctk.CTkButton(
                 self,
                 text=attrs[i],
                 width=100,
                 fg_color="#4ab1ff",
                 hover_color="#286b9e",
                 command=lambda i=i : self.filter_results(
-                    self.master.queryresults, i+1 if i > 2 else i
+                    self.master.queryresults, i+1 if i > 2 else i, i 
                 )
             )
+            
+            self.filter_button.toggle = 0
 
-            self.delete_button.grid(
+            self.filter_button.grid(
                 column=11,
                 row=i+1,
                 pady=(10,0),
                 padx=(20,0)
             )
+            
+            self.filters.append(self.filter_button)
 
     def display_query(self, queryresults) -> list:
 
@@ -582,7 +589,9 @@ class MainWindow(ctk.CTkScrollableFrame):
         # Display results up to maxresults to reduce loading time.
         # Append to models[] to allow for destruction on next display_query() call.
 
-        for j in range(1, len(queryresults) if len(queryresults) < maxresults else maxresults):
+        #for j in range(1, len(queryresults) if len(queryresults) < maxresults else maxresults):
+
+        for j in range(1, len(queryresults)+1):
 
             i = j - 1
 
@@ -594,11 +603,19 @@ class MainWindow(ctk.CTkScrollableFrame):
 
     # Function to filter and change ordering of App.queryresults.
 
-    def filter_results(self, results, attr):
+    def filter_results(self, results, attr, index):
 
-        "Reorder stored results from given input."
+        "Reorder stored results from given input and button state."
+
+        toggle = self.filters[index].toggle
 
         results = sorted(results, key=lambda x: x[attr])
+
+        if toggle == 1:
+
+            results = list(reversed(results)) 
+
+        self.filters[index].toggle ^= 1
 
         self.master.queryresults  = results
 

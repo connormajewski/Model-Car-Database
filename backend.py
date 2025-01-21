@@ -65,6 +65,8 @@ def execute_query(query, params=None):
 
 def add_model(brand, year, scale, condition, quantity, description='', value=0.0):
 
+    print(f"{brand}\n{year}\n{scale}\n{condition}\n{quantity}\n{description}\n{value}\n")
+
     "Function to add a model from parameters given in EditWindow."
 
     attr = ["brand", "year", "scale", "condition", "quantity"]
